@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 
 const welcome = { greeting: 'Hey', title: 'React!', };
-function getTitle(title) { return title; }
+const getTitle = (title) =>  { return title; }
 
 const list = [ 
   { title: 'React',
@@ -13,30 +13,12 @@ const list = [
     author: 'Dan Abramov, Andrew Clark', num_comments: 2, 
     points: 5, objectID: 1, }, ];
 
-function App() {
+const App = () =>{
 
   return ( <div> 
   
             <h1> {welcome.greeting} {welcome.title} </h1>
             <h1>Hello {getTitle('React')}</h1>
-            <label htmlFor="search">Search: </label>
-
-            <input id="search" type="text" />
-
-            <ul> {list.map(function (item) 
-                  { return (
-                    <li key={item.objectID}>
-                    <span>
-                      <a href={item.url}>{item.title}</a>
-                    </span>
-                    <span>{item.author}</span>
-                    <span>{item.num_comments}</span>
-                    <span>{item.points}</span>
-                  </li>
-                    ); 
-                  
-                    })}       
-            </ul>
 
             <Search />
 
@@ -49,9 +31,10 @@ function App() {
 
 }
 
-function List() {
+const List = () => {
 
-  return ( <ul> {list.map(function (item) { return ( <li key={item.objectID}> <span> <a href={item.url}>{item.title}</a> </span> <span>{item.author}</span> <span>{item.num_comments}</span> <span>{item.points}</span>
+  return ( <ul> {list.map( (item) => {
+                 return ( <li key={item.objectID}> <span> <a href={item.url}>{item.title}</a> </span> <span>{item.author}</span> <span>{item.num_comments}</span> <span>{item.points}</span>
           
           </li>
           
@@ -63,7 +46,7 @@ function List() {
   
   }
 
-  function Search() { return ( <div>
+  const Search = () => { return ( <div>
 
     <label htmlFor="search">Search: </label>
     
