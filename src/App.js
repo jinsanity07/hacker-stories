@@ -38,7 +38,12 @@ function App() {
                     })}       
             </ul>
 
-            <List />
+            <Search />
+
+            <hr />
+             <List />
+             <hr />
+             <List />
             <Search/>
               </div> );
 
