@@ -17,11 +17,15 @@ const list = [
 const App = () =>{
   const stories = [ { title: 'React', url: 'https://reactjs.org/', author: 'Jordan Walke', num_comments: 3, points: 4, objectID: 0, }, { title: 'Redux', url: 'https://redux.js.org/', author: 'Dan Abramov, Andrew Clark', num_comments: 2, points: 5, objectID: 1, }, ];
   console.log('App renders');
-  // A 
-  const handleSearch = (event) => {
-  // C
-  console.log(event.target.value); };
+  
+  const [searchTerm, setSearchTerm] = React.useState('');
 
+  const handleSearch = (event) => { setSearchTerm(event.target.value); };
+
+  const searchedStories = stories.filter(function (story) { 
+      return story.title.includes(searchTerm); 
+    });
+  
   return ( <div> 
   
             <h1> {welcome.greeting} {welcome.title} </h1>
@@ -31,7 +35,7 @@ const App = () =>{
 
             
              <hr />
-             <List list={stories} />
+             <List list={searchedStories} />
               </div> );
 
 }
@@ -58,28 +62,35 @@ const List = (props) => {
       </li> 
       );
 
+const Search = (props) => ( <div>
 
-  const Search = (props) => {
-    // let searchTerm = '';
-    const [searchTerm, setSearchTerm] = React.useState('');
+  <label htmlFor="search">Search: </label>
+  
+  <input id="search" type="text" onChange={props.onSearch} />
+  
+  </div> );
 
-    const handleChange = (event) => { 
-      // console.log(event);
-      console.log(event.target.value); 
-      // a function to update this state
-      setSearchTerm(event.target.value);
-      // B 
-      props.onSearch(event);
-    };
+//   const Search = (props) => {
+//     // let searchTerm = '';
+//     const [searchTerm, setSearchTerm] = React.useState('');
 
-    return ( 
-    <div>
+//     const handleChange = (event) => { 
+//       // console.log(event);
+//       console.log(event.target.value); 
+//       // a function to update this state
+//       setSearchTerm(event.target.value);
+//       // B 
+//       props.onSearch(event);
+//     };
 
-      <label htmlFor="search">Search: </label>      
-      <input id="search" type="text" onChange={handleChange}/>
-      <p> Searching for <strong>{searchTerm}</strong>.</p>
+//     return ( 
+//     <div>
 
-    </div> );
+//       <label htmlFor="search">Search: </label>      
+//       <input id="search" type="text" onChange={handleChange}/>
+//       <p> Searching for <strong>{searchTerm}</strong>.</p>
 
-}
+//     </div> );
+
+// }
 export default App;
