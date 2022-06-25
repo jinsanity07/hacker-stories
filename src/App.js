@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 
 const welcome = { greeting: 'Hey', title: 'React!', };
 const getTitle = (title) =>  { return title; }
@@ -15,6 +16,7 @@ const list = [
 
 const App = () =>{
   const stories = [ { title: 'React', url: 'https://reactjs.org/', author: 'Jordan Walke', num_comments: 3, points: 4, objectID: 0, }, { title: 'Redux', url: 'https://redux.js.org/', author: 'Dan Abramov, Andrew Clark', num_comments: 2, points: 5, objectID: 1, }, ];
+  console.log('App renders');
   return ( <div> 
   
             <h1> {welcome.greeting} {welcome.title} </h1>
@@ -31,7 +33,7 @@ const App = () =>{
 }
 
 const List = (props) => {
-
+  console.log('List renders');
   return ( <ul> 
       {props.list.map((item) => (
       <Item key={item.objectID} item={item} />
@@ -53,10 +55,18 @@ const List = (props) => {
       );
 
 
-  const Search = () => { 
+  const Search = () => {
+    // let searchTerm = '';
+    const [searchTerm, setSearchTerm] = React.useState('');
+
     const handleChange = (event) => { 
-      console.log(event);
-      console.log(event.target.value); };
+      // console.log(event);
+      console.log(event.target.value); 
+      // a function to update this state
+      setSearchTerm(event.target.value);
+    };
+
+
 
     return ( 
     <div>
@@ -64,6 +74,8 @@ const List = (props) => {
     <label htmlFor="search">Search: </label>
     
     <input id="search" type="text" onChange={handleChange}/>
+
+    <p> Searching for <strong>{searchTerm}</strong>.</p>
     </div> );
 
 }
