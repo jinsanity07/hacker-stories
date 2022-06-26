@@ -38,29 +38,21 @@ const App = () =>{
               </div> );
 
 }
-
-const List = ({list}) => {
-  console.log('List renders');
-  // rest operator is always used to separate an object from some of its properties.
-  return ( 
-      <ul> 
-        {list.map(( { objectID, ...item } ) => (
-            <Item key={objectID} {...item} />
-        ))}
-      </ul> );
+const List = ({ list }) => ( 
+  <ul>
+  {list.map((item) => ( 
+                      <Item key={item.objectID} item={item} />
+                      ))} 
+                      
+  </ul> );
   
-  };
-
-  const Item = ( { title, url, author, num_comments, points, }) => ( 
-      <li> 
-        <span> 
-          <a href={url}>{title}</a> 
-        </span> 
-        <span>{author}</span> 
-        <span>{num_comments}</span> 
-        <span>{points}</span> 
-      </li> 
-      );
+  const Item = ({ item }) => (
+             <li> 
+               <span> <a href={item.url}>{item.title}</a> </span> 
+               <span>{item.author}</span> 
+               <span>{item.num_comments}</span> 
+               <span>{item.points}</span> 
+              </li> );
 
       // conveniently access all information without dealing with its props container.
 const Search = ({ search, onSearch }) => {
