@@ -41,16 +41,17 @@ const App = () =>{
 
 const List = ({list}) => {
   console.log('List renders');
-  return ( <ul> 
-      {list.map((item) => (
-      <Item key={item.objectID} item={item} />
-
-      ))}
-          </ul> );
+  // rest operator is always used to separate an object from some of its properties.
+  return ( 
+      <ul> 
+        {list.map(( { objectID, ...item } ) => (
+            <Item key={objectID} {...item} />
+        ))}
+      </ul> );
   
   };
 
-  const Item = ({item: { title, url, author, num_comments, points, },}) => ( 
+  const Item = ( { title, url, author, num_comments, points, }) => ( 
       <li> 
         <span> 
           <a href={url}>{title}</a> 
