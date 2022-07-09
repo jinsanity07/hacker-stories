@@ -4,6 +4,8 @@ import React from 'react';
 
 const welcome = { greeting: 'Hey', title: 'React!', };
 const getTitle = (title) =>  { return title; }
+// First, the API_ENDPOINT (A) is used to fetch popular tech stories for a certain query (a search term). In this case, we fetch stories about React 
+const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 const initialStories = [
   {
@@ -95,13 +97,14 @@ const App = () =>{
   React.useEffect(() => {
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    getAsyncStories().then((result) => {
-      console.log(result.data.stories);
-      dispatchStories({
-        type: 'STORIES_FETCH_SUCCESS',
-        payload: result.data.stories,
-      });
-    })
+    fetch(`${API_ENDPOINT}react`) // (B). Second, the native browser’s fetch API¹³⁵ is used to make this request (B). For the fetch API, the response needs to be translated into JSON
+      .then((response) => response.json()) // (C). Finally, the returned result follows a different data structure
+      .then((result) => {
+        dispatchStories({
+          type: 'STORIES_FETCH_SUCCESS',
+          payload: result.hits,  // (D), which we send as payload to our component’s state reducer.
+        });
+      })
     .catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
     );
   }, []);
