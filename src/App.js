@@ -44,6 +44,14 @@ const useSemiPersistentState = (key, initialState) => {
   return [value, setValue];
 };
 
+const storiesReducer = (state, action) => {
+  if (action.type === 'SET_STORIES') {
+      return action.payload;
+  } else {
+      throw new Error();
+  }
+};
+
 const App = () =>{
   // const stories = [ { title: 'React', url: 'https://reactjs.org/', author: 'Jordan Walke', num_comments: 3, points: 4, objectID: 0, }, { title: 'Redux', url: 'https://redux.js.org/', author: 'Dan Abramov, Andrew Clark', num_comments: 2, points: 5, objectID: 1, }, ];
   console.log('App renders');
@@ -53,7 +61,10 @@ const App = () =>{
     'React'
   );
 
-  const [stories, setStories] = React.useState([]);
+  const [stories, dispatchStories] = React.useReducer(
+    storiesReducer,
+    []
+  );
   const [isLoading, setIsLoading] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
 
@@ -61,9 +72,14 @@ const App = () =>{
     setIsLoading(true);
 
     getAsyncStories().then((result) => {
-      setStories(result.data.stories);
+      console.log(result.data.stories);
+      dispatchStories({
+        type: 'SET_STORIES',
+        payload: result.data.stories,
+      });
       setIsLoading(false);
-    }).catch(() => setIsError(true));
+    })
+    .catch(() => setIsError(true));
   }, []);
 
   const handleRemoveStory = (item) => {
@@ -71,7 +87,10 @@ const App = () =>{
       (story) => item.objectID !== story.objectID
     );
 
-    setStories(newStories);
+    dispatchStories({
+      type: 'SET_STORIES',
+      payload: newStories,
+    });
   };
 
   const handleSearch = (event) => {
