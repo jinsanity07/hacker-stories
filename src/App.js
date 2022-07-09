@@ -94,7 +94,8 @@ const App = () =>{
   );
 
 
-  React.useEffect(() => {
+// A  For the sake of learning, we will move all the data fetching logic into a standalone function outside the side-effect (A)
+const handleFetchStories = React.useCallback(() => { // B wrap it into a useCallback hook (B),
     if (!searchTerm) return;
 
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
@@ -109,7 +110,11 @@ const App = () =>{
       })
     .catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
     );
-  }, [searchTerm]);
+  }, [searchTerm]); // E This hook creates a memoized function every time its dependency array (E) changes.
+
+  React.useEffect(() => {
+    handleFetchStories(); // C then invoke it in the useEffect hook (C):
+  }, [handleFetchStories]); // D As a result, the useEffect hook runs again (C) because it depends on the new function (D):
 
   const handleRemoveStory = (item) => {
     dispatchStories({
