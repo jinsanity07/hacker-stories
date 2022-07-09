@@ -121,21 +121,33 @@ const InputWithLabel = ({
 );
 };
 
-const List = ({ list }) => ( 
+const List = ({ list, onRemoveItem }) => (
   <ul>
-  {list.map((item) => ( 
-                      <Item key={item.objectID} item={item} />
-                      ))} 
-                      
-  </ul> );
+    {list.map((item) => (
+      <Item
+        key={item.objectID}
+        item={item}
+        onRemoveItem={onRemoveItem}  //passes callback handler on to the Item component:
+      />
+    ))}
+  </ul>
+);
   
-  const Item = ({ item }) => (
+  const Item = ({ item , onRemoveItem }) => {
+    const handleRemoveItem = () => { onRemoveItem(item); }; 
+    return (
+    
              <li> 
                <span> <a href={item.url}>{item.title}</a> </span> 
                <span>{item.author}</span> 
                <span>{item.num_comments}</span> 
                <span>{item.points}</span> 
-              </li> );
+               <span>
+                <button type="button" onClick={handleRemoveItem}>
+                  Dismiss
+                </button>
+              </span>
+              </li> );}
 
       // conveniently access all information without dealing with its props container.
 // const Search = ({ search, onSearch }) => {
