@@ -44,19 +44,45 @@ const App = () =>{
   );
 
       
-    return ( <div> 
-  
-            <h1> {welcome.greeting} {welcome.title} </h1>
-            <h1>Hello {getTitle('React')}</h1>
+    return ( 
+      <div>
+      <h1>My Hacker Stories</h1>
 
-            <Search search={searchTerm} onSearch={handleSearch} />
+      <InputWithLabel
+        id="search"
+        label="Search"
+        value={searchTerm}
+        onInputChange={handleSearch}
+      />
 
-            
-             <hr />
-             <List list={searchedStories} />
-              </div> );
+      <hr />
 
+      <List list={searchedStories} />
+    </div>
+    );
 }
+
+
+const InputWithLabel = ({
+  id,
+  label,
+  value,
+  type = 'text',
+  onInputChange,
+}) => (
+  <>
+    <label htmlFor={id}>{label}</label>
+    &nbsp;
+    <input
+      id={id}
+      type={type}
+      value={value}
+      onChange={onInputChange}
+    />
+  </>
+);
+
+
 const List = ({ list }) => ( 
   <ul>
   {list.map((item) => ( 
@@ -74,21 +100,21 @@ const List = ({ list }) => (
               </li> );
 
       // conveniently access all information without dealing with its props container.
-const Search = ({ search, onSearch }) => {
-  // with object destructuring
-  // const { search, onSearch } = props;
+// const Search = ({ search, onSearch }) => {
+//   // with object destructuring
+//   // const { search, onSearch } = props;
   
-  return( 
+//   return( 
 
-    <>
-      <label htmlFor="search">Search: </label>
+//     <>
+//       <label htmlFor="search">Search: </label>
       
-      <input id="search" 
-            type="text"
-            value={search}
-            onChange={onSearch} />
+//       <input id="search" 
+//             type="text"
+//             value={search}
+//             onChange={onSearch} />
     
-    </> )};
+//     </> )};
 
 //   const Search = (props) => {
 //     // let searchTerm = '';
