@@ -88,19 +88,23 @@ const App = () =>{
     'React'
   );
 
+  const [url, setUrl] = React.useState(
+    `${API_ENDPOINT}${searchTerm}`
+  );
+
   const [stories, dispatchStories] = React.useReducer(
     storiesReducer,
     { data: [], isLoading: false, isError: false }
   );
 
 
-// A  For the sake of learning, we will move all the data fetching logic into a standalone function outside the side-effect (A)
-const handleFetchStories = React.useCallback(() => { // B wrap it into a useCallback hook (B),
+  // A  For the sake of learning, we will move all the data fetching logic into a standalone function outside the side-effect (A)
+  const handleFetchStories = React.useCallback(() => { // B wrap it into a useCallback hook (B),
     if (!searchTerm) return;
 
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    fetch(`${API_ENDPOINT}${searchTerm}`) // (B). Second, the native browser’s fetch API¹³⁵ is used to make this request (B). For the fetch API, the response needs to be translated into JSON
+    fetch(url)// (B). Second, the native browser’s fetch API¹³⁵ is used to make this request (B). For the fetch API, the response needs to be translated into JSON
       .then((response) => response.json()) // (C). Finally, the returned result follows a different data structure
       .then((result) => {
         dispatchStories({
@@ -110,7 +114,7 @@ const handleFetchStories = React.useCallback(() => { // B wrap it into a useCall
       })
     .catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
     );
-  }, [searchTerm]); // E This hook creates a memoized function every time its dependency array (E) changes.
+  }, [url]); // E This hook creates a memoized function every time its dependency array (E) changes.
 
   React.useEffect(() => {
     handleFetchStories(); // C then invoke it in the useEffect hook (C):
@@ -123,13 +127,14 @@ const handleFetchStories = React.useCallback(() => { // B wrap it into a useCall
     });
   };
 
-  const handleSearch = (event) => {
+  const handleSearchInput = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const searchedStories = stories.data.filter((story) =>
-    story.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleSearchSubmit = () => {
+    setUrl(`${API_ENDPOINT}${searchTerm}`);
+  };
+
 
       
     return ( 
@@ -140,11 +145,19 @@ const handleFetchStories = React.useCallback(() => { // B wrap it into a useCall
         id="search"
         value={searchTerm}
         isFocused
-        onInputChange={handleSearch}
+        onInputChange={handleSearchInput}
       >
         <strong>Search:</strong>
 
       </InputWithLabel>
+
+      <button
+        type="button"
+        disabled={!searchTerm}
+        onClick={handleSearchSubmit}
+      >
+        Submit
+      </button>
 
       <hr />
       {stories.isError && <p>Something went wrong ...</p>}
