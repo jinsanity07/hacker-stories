@@ -134,7 +134,7 @@ const List = ({ list, onRemoveItem }) => (
 );
   
   const Item = ({ item , onRemoveItem }) => {
-    const handleRemoveItem = () => { onRemoveItem(item); }; 
+
     return (
     
              <li> 
@@ -143,7 +143,12 @@ const List = ({ list, onRemoveItem }) => (
                <span>{item.num_comments}</span> 
                <span>{item.points}</span> 
                <span>
-                <button type="button" onClick={handleRemoveItem}>
+               <button type="button" onClick={ () => { 
+                 // do something else   using 3=> a block body
+               // note: avoid using complex logic in JSX
+              //  1=> JavaScript’s bind method:  onRemoveItem.bind(null, item)
+              //  2=> wrapping arrow function
+               onRemoveItem(item)} }>   {/*   */}
                   Dismiss
                 </button>
               </span>
