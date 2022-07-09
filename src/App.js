@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
+import axios from 'axios';
 
 const welcome = { greeting: 'Hey', title: 'React!', };
 const getTitle = (title) =>  { return title; }
@@ -100,19 +101,19 @@ const App = () =>{
 
   // A  For the sake of learning, we will move all the data fetching logic into a standalone function outside the side-effect (A)
   const handleFetchStories = React.useCallback(() => { // B wrap it into a useCallback hook (B),
-    if (!searchTerm) return;
-
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    fetch(url)// (B). Second, the native browser’s fetch API¹³⁵ is used to make this request (B). For the fetch API, the response needs to be translated into JSON
-      .then((response) => response.json()) // (C). Finally, the returned result follows a different data structure
+  axios
+    .get(url)// (B). Second, the native browser’s fetch API¹³⁵ is used to make this request (B). For the fetch API, the response needs to be translated into JSON
+      // .then((response) => response.json()) // (C). Finally, the returned result follows a different data structure
       .then((result) => {
         dispatchStories({
           type: 'STORIES_FETCH_SUCCESS',
-          payload: result.hits,  // (D), which we send as payload to our component’s state reducer.
+          payload: result.data.hits,  // (D), which we send as payload to our component’s state reducer.
         });
       })
-    .catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
+    .catch(() => 
+      dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
     );
   }, [url]); // E This hook creates a memoized function every time its dependency array (E) changes.
 
