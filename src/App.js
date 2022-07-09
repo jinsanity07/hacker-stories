@@ -45,13 +45,17 @@ const useSemiPersistentState = (key, initialState) => {
 };
 
 const storiesReducer = (state, action) => {
-  if (action.type === 'SET_STORIES') {
+  switch (action.type) {
+    case 'SET_STORIES':
       return action.payload;
-  } else {
+    case 'REMOVE_STORY':
+      return state.filter(
+        (story) => action.payload.objectID !== story.objectID
+      );
+    default:
       throw new Error();
   }
 };
-
 const App = () =>{
   // const stories = [ { title: 'React', url: 'https://reactjs.org/', author: 'Jordan Walke', num_comments: 3, points: 4, objectID: 0, }, { title: 'Redux', url: 'https://redux.js.org/', author: 'Dan Abramov, Andrew Clark', num_comments: 2, points: 5, objectID: 1, }, ];
   console.log('App renders');
@@ -83,13 +87,9 @@ const App = () =>{
   }, []);
 
   const handleRemoveStory = (item) => {
-    const newStories = stories.filter(
-      (story) => item.objectID !== story.objectID
-    );
-
     dispatchStories({
-      type: 'SET_STORIES',
-      payload: newStories,
+      type: 'REMOVE_STORY',
+      payload: item,
     });
   };
 
