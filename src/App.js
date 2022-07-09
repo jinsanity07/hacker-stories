@@ -95,9 +95,11 @@ const App = () =>{
 
 
   React.useEffect(() => {
+    if (!searchTerm) return;
+
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    fetch(`${API_ENDPOINT}react`) // (B). Second, the native browser’s fetch API¹³⁵ is used to make this request (B). For the fetch API, the response needs to be translated into JSON
+    fetch(`${API_ENDPOINT}${searchTerm}`) // (B). Second, the native browser’s fetch API¹³⁵ is used to make this request (B). For the fetch API, the response needs to be translated into JSON
       .then((response) => response.json()) // (C). Finally, the returned result follows a different data structure
       .then((result) => {
         dispatchStories({
@@ -107,7 +109,7 @@ const App = () =>{
       })
     .catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
     );
-  }, []);
+  }, [searchTerm]);
 
   const handleRemoveStory = (item) => {
     dispatchStories({
@@ -142,7 +144,7 @@ const App = () =>{
       <hr />
       {stories.isError && <p>Something went wrong ...</p>}
       {stories.isLoading ? ( <p>Loading ...</p> ) : (
-                    <List list={searchedStories} onRemoveItem={handleRemoveStory} />
+                    <List list={stories.data} onRemoveItem={handleRemoveStory} />
       )}
 
     </div>
